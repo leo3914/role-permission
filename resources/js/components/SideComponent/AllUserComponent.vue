@@ -16,20 +16,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-if="isLoading">
+            <!-- <tr v-if="isLoading">
                 <td colspan="100" class="text-center">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </td>
-            </tr>
+            </tr> -->
             <tr v-for="user in users" :key="user.id">
                 <th scope="row">{{ user.id }}</th>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
                 <td>
-                    {{ user.role.role }}
+                    {{ user.role_id }}
                 </td>
                 <td>
                     <button v-if="loginUserId == 1" @click="editUser(user.id)" class=" btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { mapActions,mapGetters } from 'vuex';
 import api from '../../api/axios';
 import fetchUser from '../../api/userApi';
 
@@ -75,23 +76,16 @@ export default {
     name: "AllUserComponent",
     data() {
         return {
-            isLoading: true,
             name: "",
             phone: "",
             role_id: "",
             id: "",
             loginUserId: localStorage.getItem('role_id'),
             token: localStorage.getItem('token'),
-            users: [],
         }
     },
-    props: {
-        // users: {
-        //     required: true,
-        // },
-        // fetchUsers: {
-        //     type: Function,
-        // },
+    computed: {
+        ...mapGetters(["users"]),
     },
     methods: {
         editUser(id) {
@@ -139,6 +133,7 @@ export default {
                 console.error(e.message);
             }
         },
+        ...mapActions(['getUsers']),
         async fetchUsers() {
             try {
                 const res = await api.get('/users', {
@@ -149,7 +144,7 @@ export default {
                 const data = res.data.users;
                 this.isLoading = false,
                     this.users = data;
-                // console.log(data);
+                console.log(res);
                 // console.log(this.users);
             } catch (e) {
                 console.log(e.message);
@@ -157,7 +152,9 @@ export default {
         }
     },
     mounted() {
-        this.fetchUsers();
+        // this.fetchUsers();
+        this.getUsers(this.token);
+        console.log(this.users);
     },
 }
 </script>

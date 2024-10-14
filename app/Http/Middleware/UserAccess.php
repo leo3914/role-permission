@@ -15,18 +15,13 @@ class UserAccess
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if ($request->user()->role_id == $role) {
+        if ( $request->user()->role_id == $role) {
             return $next($request);
         }
+        // dd( $role);
         return response()->json([
+            'role_id' => $request->user()->role_id,
             'message' => "U haven't permission. Please try again."
         ], 403);
-
-        // if (!in_array($request->user()->role_id, $roles)) {
-        //     return response()->json([
-        //         'message' => "You don't have permission to access this resource."
-        //     ], 403);
-        // }
-        // return $next($request);
     }
 }

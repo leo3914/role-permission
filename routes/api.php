@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum', 'user-access:1'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'user-access:2'])->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
+    // Route::get('/users', [UserController::class, 'index']);
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::get('/tasks', [TaskController::class, 'index']);
 });
