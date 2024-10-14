@@ -1,0 +1,52 @@
+<template>
+<h2 class="text-center">Dashboard</h2>
+<h6 class="text-center text-primary">
+    {{ userName }}
+    <span class="text-secondary" v-if="userRole == 1">(Admin)</span>
+    <span class="text-secondary" v-else>(Manager)</span>
+</h6>
+<div class="list-group">
+    <router-link to="/dashboard" class="list-group-item list-group-item-action">
+        Home
+    </router-link>
+    <router-link v-if="userRole == 1" to="/dashboard/create" class="list-group-item list-group-item-action">
+        Create User
+    </router-link>
+    <!-- <router-link v-if="userRole == 1" to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link> -->
+    <router-link v-if="userRole == 2" to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link>
+    <router-link to="/dashboard/task" class="list-group-item list-group-item-action">Done Tasks</router-link>
+    <router-link to="/dashboard/profile" class="list-group-item list-group-item-action">Profile</router-link>
+    <button @click="logout" class="list-group-item list-group-item-action">Logout</button>
+</div>
+</template>
+
+<script>
+export default {
+    name: "NavComponent",
+    data() {
+        return {
+            user: null,
+        }
+    },
+    props:{
+        userName : String,
+        userRole : Number,
+    },
+    methods: {
+        logout() {
+            localStorage.removeItem('token');
+            localStorage.clear();
+            // this.isLoggedIn = false;
+            this.$router.push('/');
+        }
+    },
+    mounted(){
+        // const user = localStorage.getItem('user');
+        // if (user) {
+        //     this.user = JSON.parse(user);
+        // }
+        // this.user = user.name;
+        // console.log(this.user);
+    }
+}
+</script>
