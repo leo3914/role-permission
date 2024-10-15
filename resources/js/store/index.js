@@ -1,9 +1,11 @@
 import { createStore } from "vuex";
-import users from "./modules/users";
+import Users from "./modules/users";
+import Roles from "./modules/Roles";
 
 
 export default createStore({
     modules:{
-        users,
+        Users,
+        Roles
     }
 });

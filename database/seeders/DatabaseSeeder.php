@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -32,5 +33,11 @@ class DatabaseSeeder extends Seeder
         Role::create([
             'role' => "Admin"
         ]);
+        $permissions = ["user-create", "user-read", "user-update", "user-delete"];
+        foreach ($permissions as $per) {
+            Permission::create([
+                'name' => $per,
+            ]);
+        };
     }
 }
