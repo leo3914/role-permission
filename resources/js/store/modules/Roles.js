@@ -26,29 +26,45 @@ export default {
         },
     },
     actions: {
-        async getRoles({ commit }) {
+        async getRoles({ commit }, token) {
             try {
-                const { data } = await api.get("/roles");
+                const { data } = await api.get("/roles", {
+                    headers: {
+                        Authorization: `Bearer ${token} `,
+                    },
+                });
                 // console.log(data);
                 commit("setRoles", data.roles);
             } catch (e) {
                 console.error(e.message);
             }
         },
-        async createRole({ commit }, role) {
+        async createRole({ commit }, newRole) {
             try {
-                const res = await api.post("/roles", {
-                    role: role,
-                });
-                console.log(res);
-                commit("updateData", res.data.role);
+                const { data } = await api.post(
+                    "/role-permission",
+                    {
+                        role: newRole.role,
+                        permissions: newRole.selectPermissions,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${newRole.token} `,
+                        },
+                    }
+                );
+                commit("updateData",data.role);
             } catch (error) {
                 console.log(error.message);
             }
         },
-        async getPermissions({ commit }) {
+        async getPermissions({ commit }, token) {
             try {
-                const { data } = await api.get("/permissions");
+                const { data } = await api.get("/permissions", {
+                    headers: {
+                        Authorization: `Bearer ${token} `,
+                    },
+                });
                 console.log(data.permissions);
                 commit("setPermission", data.permissions);
             } catch (error) {

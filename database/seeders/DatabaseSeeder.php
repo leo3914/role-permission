@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("admin1234"),
             'role_id' => 1
         ]);
-        Role::create([
+        $adminRole = Role::create([
             'role' => "Admin"
         ]);
         $permissions = ["user-create", "user-read", "user-update", "user-delete"];
@@ -39,5 +39,8 @@ class DatabaseSeeder extends Seeder
                 'name' => $per,
             ]);
         };
+
+        $allPermissions = Permission::all();
+        $adminRole->permissions()->attach($allPermissions->pluck('id'));
     }
 }

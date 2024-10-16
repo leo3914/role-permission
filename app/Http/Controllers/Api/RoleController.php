@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
@@ -37,7 +38,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::with('permissions')->get();
         return response()->json([
             "roles" => $roles,
         ], 200);
@@ -46,14 +47,15 @@ class RoleController extends Controller
     public function createRolePermission()
     {
         $validator = Validator::make(request()->all(), [
-            'name' => 'required|string|unique:roles,name',
+            'role' => 'required|string|unique:roles,name',
             'permissions' => 'required|array',
         ]);
         $role = Role::create([
-            "name" => request('role_name')
+            "role" => request('role')
         ]);
 
-        $role->permissions()->attach(request('permissions'));
+        $permissions = request('permissions');
+        $role->permissions()->attach($permissions);
 
         return response()->json([
             'message' => 'Role created successfully with assigned permissions.',
@@ -66,7 +68,7 @@ class RoleController extends Controller
         $permissions = Permission::all();
         return response()->json([
             'permissions' => $permissions,
-            "message" => "Ok"
+            "message" => "Ok nar sar"
         ], 200);
     }
 }

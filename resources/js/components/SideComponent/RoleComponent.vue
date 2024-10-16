@@ -8,17 +8,17 @@
         <div class="row">
             <div class="col-md-4 border p-4 rounded">
                 <h5 class="mb-3">Create Role</h5>
-                <form @submit.prevent="clearForm">
-                    <input type="text" class="form-control mb-2" placeholder="Enter role" v-model="role">
+                <form @submit.prevent="clearForm()">
+                    <input type="text" class="form-control mb-2" placeholder="Enter role" v-model="newRole.role">
                     <div class="row">
                         <div class="form-check col-4 m-1" v-for="permission in permissions" :key="permission.id">
-                            <input class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
-                            <label class="form-check-label" :for="'permission_' + permission.id">
+                            <input v-model="newRole.selectPermissions" class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
+                            <label class="form-check-label text-primary" :for="'permission_' + permission.id">
                                 {{ permission.name.toUpperCase() }}
                             </label>
                         </div>
                     </div>
-                    <button class="btn btn-primary mt-2" @click="createRole(role)">Create Role</button>
+                    <button class="btn btn-primary mt-2" @click="createRole(newRole)">Create Role</button>
                 </form>
             </div>
             <div class="col-md-8">
@@ -27,12 +27,15 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Actions</th>
+                        <th>Permissions</th>
                     </tr>
                     <tr v-for="role in roles" :key="role.id">
                         <td>{{ role.id }}</td>
                         <td>{{ role.role }}</td>
                         <td>
+                            <span>
+                                <span v-for="permission in role.permissions" :key="permission.id" class="badge text-bg-primary m-1">{{ permission.name }}</span>
+                            </span>
                         </td>
                     </tr>
                 </table>
@@ -54,12 +57,18 @@ export default {
     name: "RoleComponent",
     data() {
         return {
-            role: ""
+            token: localStorage.getItem('token'),
+            newRole: {
+                token: localStorage.getItem('token'),
+                role: "",
+                selectPermissions: [],
+            },
         }
     },
     methods: {
         clearForm() {
-            this.role = "";
+            this.newRole.role = "";
+            this.newRole.selectPermissions = [];
         },
         ...mapActions(['getRoles', 'createRole', 'getPermissions']),
     },
@@ -67,10 +76,10 @@ export default {
         ...mapGetters(['roles', 'permissions']),
     },
     mounted() {
-        this.getRoles();
-        this.getPermissions();
+        this.getRoles(this.token);
+        this.getPermissions(this.token);
         // this.createRole(this.role);
-        console.log(this.roles);
+        // console.log(this.roles);
     },
 }
 </script>
