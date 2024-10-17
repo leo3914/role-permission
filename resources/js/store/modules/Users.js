@@ -50,6 +50,25 @@ export default {
                 console.log(e.message);
             }
         },
+        async createUser({ commit }, newUser) {
+            try {
+                this.errors = null;
+                const {data} = await api.post("/users", {
+                    name : newUser.name,
+                    email : newUser.email,
+                    phone: newUser.phone,
+                    password : newUser.password,
+                    role_id : newUser.role_id,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${newUser.token}`,
+                    },
+                });
+                alert(data.message);
+            } catch (error) {
+                alert(error.message);
+            }
+        },
         async updateUser({ commit }, id, user) {
             try {
                 const res = await api.put(`/users/${id}`, user);
