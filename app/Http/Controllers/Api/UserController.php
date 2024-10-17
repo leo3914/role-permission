@@ -94,7 +94,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = User::with('role')->get();
+            $users = User::with('role', 'role.permissions')->get();
             return response()->json(['users' => $users], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Failed to fetch users'], 500);

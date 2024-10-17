@@ -12,7 +12,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Role</th>
-                <th v-if="loginUserId == 1" scope="col">Action</th>
+                <th scope="col">Permissions</th>
             </tr>
         </thead>
         <tbody>
@@ -32,8 +32,13 @@
                     {{ user.role.role }}
                 </td>
                 <td>
-                    <button v-if="loginUserId == 1" @click="editUser(user.id)" class=" btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                    <button @click="deleteUser(user.id)" v-if="loginUserId == 1" class=" btn btn-outline-danger btn-sm me-1">Delete</button>
+                    <span>
+                        <span v-for="permission in user.role.permissions" :key="permission.id" :class="badge(permission.name)" class="badge m-1">
+                            {{ permission.name }}
+                        </span>
+                    </span>
+                    <!-- <button v-if="loginUserId == 1" @click="editUser(user.id)" class=" btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+                    <button @click="deleteUser(user.id)" v-if="loginUserId == 1" class=" btn btn-outline-danger btn-sm me-1">Delete</button> -->
                 </td>
             </tr>
         </tbody>
@@ -101,6 +106,20 @@ export default {
             console.log(this.user);
             this.getRoles();
             // console.log(this.user.name);
+        },
+        badge(permissionName) {
+            switch (permissionName) {
+                case 'user-read':
+                    return 'text-bg-info';
+                case 'user-create':
+                    return 'text-bg-primary';
+                case 'user-update':
+                    return 'text-bg-secondary';
+                case 'user-delete':
+                    return 'text-bg-danger';
+                default:
+                    return 'text-bg-light';
+            }
         },
         // async updateUser(id) {
         //     try {
