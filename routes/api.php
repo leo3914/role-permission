@@ -23,23 +23,23 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
-Route::middleware(['auth:sanctum', 'user-access:1'])->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'create']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'delete']);
-    Route::post('/roles', [RoleController::class, 'store']);
-    Route::get('/roles', [RoleController::class, 'index']);
-    Route::get('/tasks', [TaskController::class, 'index']);
-    Route::post('/role-permission', [RoleController::class, 'createRolePermission']);
-    Route::get('/permissions', [RoleController::class, 'getPermissions']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->middleware('permission:user-read');
+    Route::post('/users', [UserController::class, 'create'])->middleware('permission:user-create');
+    Route::put('/users/{id}', [UserController::class, 'update'])->middleware('permission:user-update');
+    Route::delete('/users/{id}', [UserController::class, 'delete'])->middleware('permission:user-delete');
+    Route::post('/roles', [RoleController::class, 'store'])->middleware('user-access:1');
+    Route::get('/roles', [RoleController::class, 'index'])->middleware('user-access:1');
+    Route::get('/tasks', [TaskController::class, 'index'])->middleware('user-access:1');
+    Route::post('/role-permission', [RoleController::class, 'createRolePermission'])->middleware('user-access:1');
+    Route::get('/permissions', [RoleController::class, 'getPermissions'])->middleware('user-access:1');
 });
 
-Route::middleware(['auth:sanctum', 'user-access:2'])->group(function () {
-    // Route::get('/users', [UserController::class, 'index']);
-    Route::post('/tasks', [TaskController::class, 'store']);
-    Route::get('/tasks', [TaskController::class, 'index']);
-});
+// Route::middleware(['auth:sanctum', 'user-access:2'])->group(function () {
+//     // Route::get('/users', [UserController::class, 'index']);
+//     Route::post('/tasks', [TaskController::class, 'store']);
+//     Route::get('/tasks', [TaskController::class, 'index']);
+// });
 
 // Route::middleware('auth:sanctum')->group(function(){
 //     Route::get('/users', [UserController::class, 'index']);
