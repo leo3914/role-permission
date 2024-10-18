@@ -5,6 +5,7 @@ export default {
         users: [],
         isLoading: true,
         error: null,
+        user:[],
     },
     getters: {
         users(state) {
@@ -13,10 +14,16 @@ export default {
         isLoading(state) {
             return state.isLoading;
         },
+        user(state){
+            return state.user
+        }
     },
     mutations: {
         setUsers(state, users) {
             state.users = users;
+        },
+        setUser(state,user){
+            state.user = user;
         },
         setLoading(state, isLoading) {
             state.isLoading = isLoading;
@@ -53,17 +60,21 @@ export default {
         async createUser({ commit }, newUser) {
             try {
                 this.errors = null;
-                const {data} = await api.post("/users", {
-                    name : newUser.name,
-                    email : newUser.email,
-                    phone: newUser.phone,
-                    password : newUser.password,
-                    role_id : newUser.role_id,
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${newUser.token}`,
+                const { data } = await api.post(
+                    "/users",
+                    {
+                        name: newUser.name,
+                        email: newUser.email,
+                        phone: newUser.phone,
+                        password: newUser.password,
+                        role_id: newUser.role_id,
                     },
-                });
+                    {
+                        headers: {
+                            Authorization: `Bearer ${newUser.token}`,
+                        },
+                    }
+                );
                 alert(data.message);
             } catch (error) {
                 alert(error.message);
@@ -77,6 +88,15 @@ export default {
                 console.log(res);
             } catch (e) {
                 console.error(e.message);
+            }
+        },
+        async getUserId({ commit }, id) {
+            try {
+                const {data} = await api.get(`/users/${id}`);
+                console.log(user);
+                commit("setUser",data.user);
+            } catch (error) {
+                console.log(error.message);
             }
         },
     },

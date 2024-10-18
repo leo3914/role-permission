@@ -65,7 +65,7 @@ export default {
                         Authorization: `Bearer ${token} `,
                     },
                 });
-                console.log(data.permissions);
+                // console.log(data.permissions);
                 commit("setPermission", data.permissions);
             } catch (error) {
                 console.log(error);

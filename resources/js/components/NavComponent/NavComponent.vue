@@ -8,10 +8,10 @@
     <router-link to="/dashboard" class="list-group-item list-group-item-action">
         Home
     </router-link>
-    <router-link v-if="userRole == 1" to="/dashboard/create" class="list-group-item list-group-item-action">
+    <router-link to="/dashboard/create" class="list-group-item list-group-item-action">
         Create User
     </router-link>
-    <router-link to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link>
+    <router-link v-if="userRole == 'Admin'" to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link>
     <router-link to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link>
     <router-link to="/dashboard/task" class="list-group-item list-group-item-action">Done Tasks</router-link>
     <router-link to="/dashboard/profile" class="list-group-item list-group-item-action">Profile</router-link>

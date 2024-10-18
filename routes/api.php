@@ -25,6 +25,7 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->middleware('permission:user-read');
+    Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('permission:user-update');
     Route::post('/users', [UserController::class, 'create'])->middleware('permission:user-create');
     Route::put('/users/{id}', [UserController::class, 'update'])->middleware('permission:user-update');
     Route::delete('/users/{id}', [UserController::class, 'delete'])->middleware('permission:user-delete');

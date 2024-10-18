@@ -186,4 +186,17 @@ class UserController extends Controller
             return response()->json(['error' => 'Failed to fetch user'], 500);
         }
     }
+
+    public function getUser()
+    {
+        try {
+            $user = User::with('role.permissions')->find(request('id'));
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+            return response()->json(['user' => $user], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Failed to fetch users'], 500);
+        }
+    }
 }

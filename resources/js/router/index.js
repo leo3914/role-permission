@@ -9,6 +9,7 @@ import ProfileComponent from "../components/SideComponent/ProfileComponent.vue";
 import UserPage from "../pages/User/UserPage.vue";
 import CreateComponent from "../components/SideComponent/CreateComponent.vue";
 import CreateTaskComponent from "../components/SideComponent/CreateTaskComponent.vue";
+import EditUserComponent from "../components/SideComponent/EditUserComponent.vue";
 
 const routes = [
     {
@@ -39,12 +40,18 @@ const routes = [
                 path: "",
                 name: "AllUserComponent",
                 component: AllUserComponent,
-                props : true,
+                props: true,
             },
             {
-                path : '/dashboard/create',
-                name : "CreateComponent",
-                component : CreateComponent,
+                path: "/dashboard/user/:id",
+                name: "EditUserComponent",
+                component: EditUserComponent,
+                props: true,
+            },
+            {
+                path: "/dashboard/create",
+                name: "CreateComponent",
+                component: CreateComponent,
             },
             {
                 path: "/dashboard/role",
@@ -65,7 +72,7 @@ const routes = [
                 path: "/dashboard/createTask",
                 name: "CreateTaskComponent",
                 component: CreateTaskComponent,
-            }
+            },
         ],
     },
     // {

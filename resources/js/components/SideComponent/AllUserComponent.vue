@@ -40,7 +40,7 @@
                     </span>
                 </td>
                 <td>
-                    <button class="btn btn-outline-info btn-sm me-1">Edit</button>
+                    <button @click="editUser(user.id)" class="btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                     <button class="btn btn-outline-danger btn-sm">Delete</button>
                 </td>
             </tr>
@@ -58,11 +58,14 @@
             <div class="modal-body">
                 <input type="hidden" v-model="user.id" />
                 <input type="text" v-model="user.name" class="form-control mb-1">
-
                 <input type="number" v-model="user.phone" class="form-control mb-1">
-                <select class="form-select" v-model="user.role_id">
-                    <option v-for="role in roles" :key="role.id" value="role.id">{{ role.role }}</option>
-                </select>
+                <h5>Role : {{ user.role }}</h5>
+                <div class="form-check col-4 m-1" v-for="permission in permissions" :key="permission.id">
+                    <input :checked="user.userPermissions.includes(permission.id)" v-model="user.userPermissions" class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
+                    <label class="form-check-label text-primary" :for="'permission_' + permission.id">
+                        {{ permission.name.toUpperCase() }}
+                    </label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -91,13 +94,15 @@ export default {
                 phone: "",
                 role_id: "",
                 id: "",
+                role: "",
+                userPermissions :[],
             },
             loginUserId: localStorage.getItem('role_id'),
             token: localStorage.getItem('token'),
         }
     },
     computed: {
-        ...mapGetters(["users", "isLoading", "roles"]),
+        ...mapGetters(["users", "isLoading", "roles","permissions"]),
     },
     methods: {
         editUser(id) {
@@ -106,9 +111,11 @@ export default {
             this.user.phone = findUser.phone;
             this.user.name = findUser.name;
             this.user.role_id = findUser.role_id;
-            console.log(this.user);
-            this.getRoles();
-            // console.log(this.user.name);
+            this.user.role = findUser.role.role;
+            this.user.userPermissions = findUser.role.permissions.map(permission => permission.id);
+            this.getRoles(this.token);
+            this.getPermissions(this.token);
+            console.log(this.user.userPermissions);
         },
         badge(permissionName) {
             switch (permissionName) {
@@ -123,6 +130,9 @@ export default {
                 default:
                     return 'text-bg-light';
             }
+        },
+        checkPermission(){
+            this.permissions.includes(user.userPermissions)
         },
         // async updateUser(id) {
         //     try {
@@ -161,7 +171,7 @@ export default {
         //         console.error(e.message);
         //     }
         // },
-        ...mapActions(['getUsers', 'getRoles', 'updateUser']),
+        ...mapActions(['getUsers', 'getRoles', 'updateUser',"getPermissions"]),
         // async fetchUsers() {
         //     try {
         //         const res = await api.get('/users', {
