@@ -50,22 +50,23 @@ export default {
     methods: {
         async loginUser() {
             try {
-                const res = await api.post('/login', {
+                const {data} = await api.post('/login', {
                     email: this.email,
                     password: this.password,
                 })
-                // localStorage.clear();
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("user", JSON.stringify(res.data.user));
-                localStorage.setItem("role_id", res.data.user.role_id);
-                const user = res.data.user;
-                // console.log(user.role_id);
+                const user = data.user;
+                localStorage.setItem("token",data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("role", data.role);
+                localStorage.setItem("permissions", JSON.stringify(data.permissions));
                 this.email = '';
                 this.password = '';
-                if (user.role_id == '1' || user.role_id == '2') {
+                console.log(data);
+                console.log(user);
+                if (data.token) {
                     console.log("Redirecting to dashboard");
                     this.$router.push('/dashboard');
-                } else if (user.role_id == '3') {
+                } else if (data.permissions == []) {
                     console.log("Redirecting to user page");
                     this.$router.push('/user');
                 } else {

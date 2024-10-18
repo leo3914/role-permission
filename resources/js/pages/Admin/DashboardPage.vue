@@ -56,7 +56,7 @@ export default {
         if (user) {
             this.user = JSON.parse(user);
             this.userName = this.user.name;
-            this.userRole = this.user.role_id;
+            this.userRole = this.user.role.role;
         };
     }
 }

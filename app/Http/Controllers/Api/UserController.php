@@ -66,7 +66,7 @@ class UserController extends Controller
             ], 422);
         }
 
-        $user = User::where('email', request('email'))->first();
+        $user = User::where('email', request('email'))->with('role.permissions')->first();
 
         if (!$user) {
             return response()->json([
@@ -88,6 +88,8 @@ class UserController extends Controller
             'message' => "Login Success.",
             'token' => $token,
             'user' => $user,
+            'role' => $user->role->role,
+            'permissions' => $user->role->permissions,
         ], 200);
     }
 

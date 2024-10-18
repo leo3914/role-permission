@@ -28,8 +28,7 @@ const routes = [
         props: true,
         beforeEnter: (to, from, next) => {
             const token = localStorage.getItem("token");
-            const role_id = localStorage.getItem("role_id");
-            if (token && (role_id === "1" || role_id === "2")) {
+            if (token) {
                 next();
             } else {
                 next("/");
@@ -69,20 +68,20 @@ const routes = [
             }
         ],
     },
-    {
-        path: "/user",
-        name: "UserPage",
-        component: UserPage,
-        beforeEnter: (to, from, next) => {
-            const token = localStorage.getItem("token");
-            const role_id = localStorage.getItem("role_id");
-            if (token && role_id === "3") {
-                next();
-            } else {
-                next("/");
-            }
-        },
-    },
+    // {
+    //     path: "/user",
+    //     name: "UserPage",
+    //     component: UserPage,
+    //     beforeEnter: (to, from, next) => {
+    //         const token = localStorage.getItem("token");
+    //         const role_id = localStorage.getItem("role_id");
+    //         if (token) {
+    //             next();
+    //         } else {
+    //             next("/");
+    //         }
+    //     },
+    // },
 ];
 
 const router = createRouter({

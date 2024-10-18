@@ -13,6 +13,7 @@
                 <th scope="col">Phone</th>
                 <th scope="col">Role</th>
                 <th scope="col">Permissions</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -37,8 +38,10 @@
                             {{ permission.name }}
                         </span>
                     </span>
-                    <!-- <button v-if="loginUserId == 1" @click="editUser(user.id)" class=" btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                    <button @click="deleteUser(user.id)" v-if="loginUserId == 1" class=" btn btn-outline-danger btn-sm me-1">Delete</button> -->
+                </td>
+                <td>
+                    <button class="btn btn-outline-info btn-sm me-1">Edit</button>
+                    <button class="btn btn-outline-danger btn-sm">Delete</button>
                 </td>
             </tr>
         </tbody>
