@@ -80,10 +80,21 @@ export default {
                 alert(error.message);
             }
         },
-        async updateUser({ commit }, id, user) {
+        async updateUser({ commit },user) {
             try {
-                const res = await api.put(`/users/${id}`, user);
-                // alert(res.data.message);
+                const res = await api.put(`/users/${user.id}`, {
+                    name: user.name,
+                    phone: user.phone,
+                    role : user.role,
+                    permissions: user.updatePermissions
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                });
+                console.log(res);
+                console.log(user.updatePermissions);
                 // commit("updateUsers", user);
                 console.log(res);
             } catch (e) {

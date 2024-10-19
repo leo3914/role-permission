@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -111,14 +112,23 @@ class UserController extends Controller
                 return response()->json(['message' => 'User not found'], 404);
             }
 
+            $role_id = $user->role_id;
+            $permissions = request('permissions');
+
             $user->update([
                 'name' => request('name'),
                 'phone' => request('phone'),
-                'role_id' => request('role_id'),
             ]);
 
+            $role = Role::find($role_id);
+            $role->update([
+                'role' => request('role')
+            ]);
+            $role->permissions()->sync($permissions);
+
             return response()->json([
-                'message' => "Update user successfully."
+                'message' => "Update user successfully.",
+                "user" => $user,
             ], 200);
         } catch (Exception $e) {
             return response()->json([

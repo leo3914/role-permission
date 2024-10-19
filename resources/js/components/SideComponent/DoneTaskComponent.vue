@@ -32,7 +32,7 @@
                     {{ user.role.role }}
                 </td>
                 <td>
-                    <table class=" table-striped table-sm table-striped">
+                    <!-- <table class=" table-striped table-sm table-striped">
                         <tr>
                             <th>Id</th>
                             <th>Task</th>
@@ -46,7 +46,7 @@
                             <td>{{ task.deadline }}</td>
                             <td>{{ task.done == 0 ? "False" : "True" }}</td>
                         </tr>
-                    </table>
+                    </table> -->
                 </td>
             </tr>
         </tbody>

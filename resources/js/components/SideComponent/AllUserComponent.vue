@@ -39,7 +39,7 @@
                         </span>
                     </span>
                 </td>
-                <td>
+                <td v-if="loginUser.id !== user.id">
                     <button @click="editUser(user.id)" class="btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                     <button class="btn btn-outline-danger btn-sm">Delete</button>
                 </td>
@@ -57,11 +57,12 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" v-model="user.id" />
-                <input type="text" v-model="user.name" class="form-control mb-1">
-                <input type="number" v-model="user.phone" class="form-control mb-1">
-                <h5>Role : {{ user.role }}</h5>
+                <h6>Name :</h6><input type="text" v-model="user.name" class="form-control mb-1">
+                <h6>Phone :</h6><input type="number" v-model="user.phone" class="form-control mb-1">
+                <h6>Role :</h6><input type="text" v-model="user.role" class="form-control mb-1">
+                <h6>Permissions</h6>
                 <div class="form-check col-4 m-1" v-for="permission in permissions" :key="permission.id">
-                    <input :checked="user.userPermissions.includes(permission.id)" v-model="user.userPermissions" class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
+                    <input :checked="user.userPermissions.includes(permission.id)" v-model="user.updatePermissions" class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
                     <label class="form-check-label text-primary" :for="'permission_' + permission.id">
                         {{ permission.name.toUpperCase() }}
                     </label>
@@ -69,7 +70,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                <button @click="updateUser(user.id,user)" class="btn btn-outline-primary">Update</button>
+                <button @click="updateUser(user)" class="btn btn-outline-primary">Update</button>
             </div>
         </div>
     </div>
@@ -92,17 +93,23 @@ export default {
             user: {
                 name: "",
                 phone: "",
-                role_id: "",
                 id: "",
                 role: "",
-                userPermissions :[],
+                userPermissions: [],
+                updatePermissions: [],
+                token: localStorage.getItem('token'),
             },
             loginUserId: localStorage.getItem('role_id'),
             token: localStorage.getItem('token'),
         }
     },
+    props: {
+        userRole: String,
+        loginUser: Object,
+
+    },
     computed: {
-        ...mapGetters(["users", "isLoading", "roles","permissions"]),
+        ...mapGetters(["users", "isLoading", "roles", "permissions"]),
     },
     methods: {
         editUser(id) {
@@ -112,6 +119,7 @@ export default {
             this.user.name = findUser.name;
             this.user.role_id = findUser.role_id;
             this.user.role = findUser.role.role;
+            this.user.updatePermissions = findUser.role.permissions;
             this.user.userPermissions = findUser.role.permissions.map(permission => permission.id);
             this.getRoles(this.token);
             this.getPermissions(this.token);
@@ -130,9 +138,6 @@ export default {
                 default:
                     return 'text-bg-light';
             }
-        },
-        checkPermission(){
-            this.permissions.includes(user.userPermissions)
         },
         // async updateUser(id) {
         //     try {
@@ -171,7 +176,7 @@ export default {
         //         console.error(e.message);
         //     }
         // },
-        ...mapActions(['getUsers', 'getRoles', 'updateUser',"getPermissions"]),
+        ...mapActions(['getUsers', 'getRoles', 'updateUser', "getPermissions", "updateUser"]),
         // async fetchUsers() {
         //     try {
         //         const res = await api.get('/users', {
@@ -192,8 +197,7 @@ export default {
     mounted() {
         // this.fetchUsers();
         this.getUsers(this.token);
-        console.log(this.users);
-        // console.log(this.roles);
+        console.log(this.loginUser.id);
     },
 }
 </script>

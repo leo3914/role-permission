@@ -12,10 +12,10 @@
         Create User
     </router-link>
     <router-link v-if="userRole == 'Admin'" to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link>
-    <router-link to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link>
-    <router-link to="/dashboard/task" class="list-group-item list-group-item-action">Done Tasks</router-link>
     <router-link to="/dashboard/profile" class="list-group-item list-group-item-action">Profile</router-link>
     <button @click="logout" class="list-group-item list-group-item-action">Logout</button>
+    <!-- <router-link to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link> -->
+    <!-- <router-link to="/dashboard/task" class="list-group-item list-group-item-action">Done Tasks</router-link> -->
 </div>
 </template>
 

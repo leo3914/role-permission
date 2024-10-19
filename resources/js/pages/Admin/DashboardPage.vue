@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-10">
             <!-- <router-view :users="users" :fetchUsers="fetchUsers" /> -->
-            <router-view />
+            <router-view :loginUser="loginUser" />
         </div>
     </div>
 </div>
@@ -28,6 +28,7 @@ export default {
             userName: "",
             // users: [],
             userRole: null,
+            loginUser : JSON.parse(localStorage.getItem("user")),
         }
     },
     methods: {},
@@ -45,6 +46,8 @@ export default {
         }
     },
     mounted() {
+        const loginUser = JSON.parse(localStorage.getItem("user"));
+        console.log(loginUser);
         // this.fetchUsers();
         // if (localStorage.getItem('token')) {
         //     this.fetchUsers();
