@@ -61,8 +61,8 @@ export default {
                 localStorage.setItem("permissions", JSON.stringify(data.permissions));
                 this.email = '';
                 this.password = '';
-                console.log(data);
-                console.log(user);
+                // console.log(data);
+                // console.log(user);
                 if (data.token) {
                     console.log("Redirecting to dashboard");
                     this.$router.push('/dashboard');
