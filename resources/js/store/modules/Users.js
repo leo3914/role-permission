@@ -5,7 +5,7 @@ export default {
         users: [],
         isLoading: true,
         error: null,
-        user:[],
+        user: [],
     },
     getters: {
         users(state) {
@@ -14,15 +14,15 @@ export default {
         isLoading(state) {
             return state.isLoading;
         },
-        user(state){
-            return state.user
-        }
+        user(state) {
+            return state.user;
+        },
     },
     mutations: {
         setUsers(state, users) {
             state.users = users;
         },
-        setUser(state,user){
+        setUser(state, user) {
             state.user = user;
         },
         setLoading(state, isLoading) {
@@ -31,11 +31,12 @@ export default {
         setError(state, error) {
             state.error = error;
         },
-        updateUsers(state, user) {
-            state.users.forEach((el, index) => {
-                if (el.id === updatedUser.id) {
-                    state.users = [...el, ...updatedUser];
+        updateUsers(state, newUser) {
+            state.users = state.users.map((user) => {
+                if (user.id === newUser.id) {
+                    return newUser;
                 }
+                return user;
             });
         },
     },
@@ -80,32 +81,38 @@ export default {
                 alert(error.message);
             }
         },
-        async updateUser({ commit },user) {
+        async updateUser({ commit }, user) {
             try {
-                const res = await api.put(`/users/${user.id}`, {
-                    name: user.name,
-                    phone: user.phone,
-                    role : user.role,
-                    permissions: user.updatePermissions
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
+                const { data } = await api.put(
+                    `/users/${user.id}`,
+                    {
+                        name: user.name,
+                        phone: user.phone,
+                        permissions: user.updatePermissions,
                     },
-                });
-                console.log(res);
-                console.log(user.updatePermissions);
-                // commit("updateUsers", user);
-                console.log(res);
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user.token}`,
+                        },
+                    }
+                );
+                const modal = document.querySelector(
+                    '[data-bs-dismiss="modal"]'
+                );
+                if (modal) {
+                    modal.click();
+                }
+                alert(data.message);
+                commit("updateUsers", data.user);
             } catch (e) {
                 console.error(e.message);
             }
         },
         async getUserId({ commit }, id) {
             try {
-                const {data} = await api.get(`/users/${id}`);
+                const { data } = await api.get(`/users/${id}`);
                 console.log(user);
-                commit("setUser",data.user);
+                commit("setUser", data.user);
             } catch (error) {
                 console.log(error.message);
             }

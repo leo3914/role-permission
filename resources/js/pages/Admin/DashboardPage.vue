@@ -31,7 +31,11 @@ export default {
             loginUser : JSON.parse(localStorage.getItem("user")),
         }
     },
-    methods: {},
+    computed: {
+        userPermissions() {
+            return JSON.parse(this.loginPermissions || []);
+        }
+    },
     methods: {
         async fetchUsers() {
             try {
@@ -61,6 +65,7 @@ export default {
             this.userName = this.user.name;
             this.userRole = this.user.role.role;
         };
+        // console.log(this.loginPermissions);
     }
 }
 </script>

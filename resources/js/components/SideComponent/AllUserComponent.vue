@@ -24,7 +24,7 @@
                     </div>
                 </td>
             </tr>
-            <tr v-for="user in users" :key="user.id">
+            <tr v-for="user in users" :key="user.id" :class="loginUser.id == user.id ? 'table-danger': ''">
                 <th scope="row">{{ user.id }}</th>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
@@ -39,9 +39,9 @@
                         </span>
                     </span>
                 </td>
-                <td v-if="loginUser.id !== user.id">
-                    <button @click="editUser(user.id)" class="btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                <td>
+                    <button v-if="loginUser.id !== user.id && hasPermission('user-update')" @click="editUser(user.id)" class="btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+                    <button v-if="loginUser.id !== user.id && hasPermission('user-delete')" class="btn btn-outline-danger btn-sm">Delete</button>
                 </td>
             </tr>
         </tbody>
@@ -59,7 +59,7 @@
                 <input type="hidden" v-model="user.id" />
                 <h6>Name :</h6><input type="text" v-model="user.name" class="form-control mb-1">
                 <h6>Phone :</h6><input type="number" v-model="user.phone" class="form-control mb-1">
-                <h6>Role :</h6><input type="text" v-model="user.role" class="form-control mb-1">
+                <h6>Role : {{ user.role }}</h6>
                 <h6>Permissions</h6>
                 <div class="form-check col-4 m-1" v-for="permission in permissions" :key="permission.id">
                     <input :checked="user.userPermissions.includes(permission.id)" v-model="user.updatePermissions" class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
@@ -101,6 +101,7 @@ export default {
             },
             loginUserId: localStorage.getItem('role_id'),
             token: localStorage.getItem('token'),
+            loginPermissions : JSON.parse(localStorage.getItem('permissions')),
         }
     },
     props: {
@@ -112,6 +113,11 @@ export default {
         ...mapGetters(["users", "isLoading", "roles", "permissions"]),
     },
     methods: {
+        hasPermission(permission){
+            // console.log('Checking permission:', permission);
+            // console.log('Available permissions:', this.loginPermissions);
+            return this.loginPermissions.find(el => el.name == permission);
+        },
         editUser(id) {
             const findUser = this.users.find((i) => i.id == id);
             this.user.id = findUser.id;
@@ -119,11 +125,10 @@ export default {
             this.user.name = findUser.name;
             this.user.role_id = findUser.role_id;
             this.user.role = findUser.role.role;
-            this.user.updatePermissions = findUser.role.permissions;
+            this.user.updatePermissions = findUser.role.permissions.map(permission => permission.id);
             this.user.userPermissions = findUser.role.permissions.map(permission => permission.id);
             this.getRoles(this.token);
             this.getPermissions(this.token);
-            console.log(this.user.userPermissions);
         },
         badge(permissionName) {
             switch (permissionName) {
@@ -195,9 +200,8 @@ export default {
         // }
     },
     mounted() {
-        // this.fetchUsers();
         this.getUsers(this.token);
-        console.log(this.loginUser.id);
+        console.log(this.user);
     },
 }
 </script>

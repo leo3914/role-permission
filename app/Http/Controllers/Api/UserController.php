@@ -121,11 +121,8 @@ class UserController extends Controller
             ]);
 
             $role = Role::find($role_id);
-            $role->update([
-                'role' => request('role')
-            ]);
             $role->permissions()->sync($permissions);
-
+            $user = User::with('role.permissions')->find($user->id);
             return response()->json([
                 'message' => "Update user successfully.",
                 "user" => $user,
