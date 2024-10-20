@@ -2,11 +2,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2 p-2">
-            <NavComponent :userName="userName" :userRole="userRole" />
+            <NavComponent :userName="userName" :userRole="userRole" :hasPermission="hasPermission" />
         </div>
         <div class="col-md-10">
             <!-- <router-view :users="users" :fetchUsers="fetchUsers" /> -->
-            <router-view :loginUser="loginUser" />
+            <router-view :loginUser="loginUser" :hasPermission="hasPermission" />
         </div>
     </div>
 </div>
@@ -26,9 +26,9 @@ export default {
         return {
             user: null,
             userName: "",
-            // users: [],
             userRole: null,
             loginUser : JSON.parse(localStorage.getItem("user")),
+            loginPermissions: JSON.parse(localStorage.getItem('permissions')),
         }
     },
     computed: {
@@ -42,22 +42,16 @@ export default {
                 const res = await api.get('/users');
                 const data = res.data.users;
                 this.users = data;
-                // console.log(data);
-                // console.log(this.users);
             } catch (e) {
                 console.log(e.message);
             }
-        }
+        },
+        hasPermission(permission) {
+            return this.loginPermissions.find(el => el.name == permission);
+        },
     },
     mounted() {
         const loginUser = JSON.parse(localStorage.getItem("user"));
-        console.log(loginUser);
-        // this.fetchUsers();
-        // if (localStorage.getItem('token')) {
-        //     this.fetchUsers();
-        // }
-        // console.log(JSON.parse(localStorage.getItem('user')));
-        // console.log(localStorage.getItem('user'));
 
         const user = localStorage.getItem('user');
         if (user) {
@@ -65,7 +59,6 @@ export default {
             this.userName = this.user.name;
             this.userRole = this.user.role.role;
         };
-        // console.log(this.loginPermissions);
     }
 }
 </script>

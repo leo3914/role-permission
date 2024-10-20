@@ -8,7 +8,7 @@
     <router-link to="/dashboard" class="list-group-item list-group-item-action">
         Home
     </router-link>
-    <router-link to="/dashboard/create" class="list-group-item list-group-item-action">
+    <router-link v-if="hasPermission('user-create')" to="/dashboard/create" class="list-group-item list-group-item-action">
         Create User
     </router-link>
     <router-link v-if="userRole == 'Admin'" to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link>
@@ -27,9 +27,10 @@ export default {
             user: null,
         }
     },
-    props:{
-        userName : String,
-        userRole : String,
+    props: {
+        userName: String,
+        userRole: String,
+        hasPermission: Function,
     },
     methods: {
         logout() {
@@ -39,13 +40,6 @@ export default {
             this.$router.push('/');
         }
     },
-    mounted(){
-        // const user = localStorage.getItem('user');
-        // if (user) {
-        //     this.user = JSON.parse(user);
-        // }
-        // this.user = user.name;
-        // console.log(this.user);
-    }
+    mounted() {}
 }
 </script>

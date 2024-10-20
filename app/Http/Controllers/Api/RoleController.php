@@ -56,7 +56,7 @@ class RoleController extends Controller
 
         $permissions = request('permissions');
         $role->permissions()->attach($permissions);
-
+        $role->load('permissions');
         return response()->json([
             'message' => 'Role created successfully with assigned permissions.',
             'role' => $role

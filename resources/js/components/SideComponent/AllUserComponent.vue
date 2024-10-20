@@ -4,7 +4,12 @@
     <span class=" h5">Dashboard</span> | User Lists
     <hr>
     <h3 class="text-center">User Lists</h3>
-    <table class="table table-striped p-2">
+    <div v-if="!hasPermission('user-read')">
+        <div class="text-center alert alert-danger">
+            <h3>You haven't permissions :3</h3>
+        </div>
+    </div>
+    <table v-if="hasPermission('user-read')" class="table table-striped p-2">
         <thead>
             <tr>
                 <th scope="col">Id</th>
@@ -24,7 +29,7 @@
                     </div>
                 </td>
             </tr>
-            <tr v-for="user in users" :key="user.id" :class="loginUser.id == user.id ? 'table-danger': ''">
+            <tr v-for=" user in users" :key="user.id" :class="loginUser.id == user.id ? 'table-danger': ''">
                 <th scope="row">{{ user.id }}</th>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
@@ -41,7 +46,7 @@
                 </td>
                 <td>
                     <button v-if="loginUser.id !== user.id && hasPermission('user-update')" @click="editUser(user.id)" class="btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                    <button v-if="loginUser.id !== user.id && hasPermission('user-delete')" class="btn btn-outline-danger btn-sm">Delete</button>
+                    <button v-if="loginUser.id !== user.id && hasPermission('user-delete')" @click="deleteUser(user.id)" class="btn btn-outline-danger btn-sm">Delete</button>
                 </td>
             </tr>
         </tbody>
@@ -101,23 +106,17 @@ export default {
             },
             loginUserId: localStorage.getItem('role_id'),
             token: localStorage.getItem('token'),
-            loginPermissions : JSON.parse(localStorage.getItem('permissions')),
         }
     },
     props: {
         userRole: String,
         loginUser: Object,
-
+        hasPermission: Function,
     },
     computed: {
         ...mapGetters(["users", "isLoading", "roles", "permissions"]),
     },
     methods: {
-        hasPermission(permission){
-            // console.log('Checking permission:', permission);
-            // console.log('Available permissions:', this.loginPermissions);
-            return this.loginPermissions.find(el => el.name == permission);
-        },
         editUser(id) {
             const findUser = this.users.find((i) => i.id == id);
             this.user.id = findUser.id;
@@ -144,64 +143,10 @@ export default {
                     return 'text-bg-light';
             }
         },
-        // async updateUser(id) {
-        //     try {
-        //         const res = await api.put(`/users/${id}`, {
-        //             name: this.name,
-        //             email: this.email,
-        //             phone: this.phone,
-        //             role_id: this.role_id,
-        //         });
-        //         this.name = "";
-        //         this.phone = "",
-        //             this.role_id = "";
-        //         this.id = "";
-
-        //         const modal = document.querySelector('[data-bs-dismiss="modal"]');
-        //         if (modal) {
-        //             modal.click();
-        //         }
-        //         alert(res.data.message);
-        //         this.fetchUsers();
-        //     } catch (e) {
-        //         console.error(e.message);
-        //     }
-        // },
-        // async deleteUser(id) {
-        //     try {
-        //         const isConfirmed = confirm("Are you sure you want to delete this user?");
-
-        //         if (isConfirmed) {
-        //             const res = await api.delete(`/users/${id}`);
-        //             alert(res.data.message);
-        //             this.fetchUsers();
-        //         }
-        //         this.fetchUsers();
-        //     } catch (e) {
-        //         console.error(e.message);
-        //     }
-        // },
-        ...mapActions(['getUsers', 'getRoles', 'updateUser', "getPermissions", "updateUser"]),
-        // async fetchUsers() {
-        //     try {
-        //         const res = await api.get('/users', {
-        //             headers: {
-        //                 Authorization: `Bearer ${this.token} `,
-        //             }
-        //         });
-        //         const data = res.data.users;
-        //         this.isLoading = false,
-        //             this.users = data;
-        //         console.log(res);
-        //         // console.log(this.users);
-        //     } catch (e) {
-        //         console.log(e.message);
-        //     }
-        // }
+        ...mapActions(['getUsers', 'getRoles', 'updateUser', "getPermissions", "updateUser", "deleteUser"]),
     },
     mounted() {
         this.getUsers(this.token);
-        console.log(this.user);
     },
 }
 </script>

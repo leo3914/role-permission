@@ -39,6 +39,9 @@ export default {
                 return user;
             });
         },
+        delUser(state, id) {
+            state.users = state.users.filter((user) => user.id !== id);
+        },
     },
     actions: {
         async getUsers({ commit }, token) {
@@ -104,6 +107,21 @@ export default {
                 }
                 alert(data.message);
                 commit("updateUsers", data.user);
+            } catch (e) {
+                console.error(e.message);
+            }
+        },
+        async deleteUser({ commit }, id) {
+            try {
+                const isConfirmed = confirm(
+                    "Are you sure you want to delete this user?"
+                );
+
+                if (isConfirmed) {
+                    const res = await api.delete(`/users/${id}`);
+                    alert(res.data.message);
+                    commit("delUser", id);
+                }
             } catch (e) {
                 console.error(e.message);
             }

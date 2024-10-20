@@ -34,7 +34,7 @@
                         <td>{{ role.role }}</td>
                         <td>
                             <span>
-                                <span v-for="permission in role.permissions" :key="permission.id" class="badge text-bg-primary m-1">{{ permission.name }}</span>
+                                <span v-for="permission in role.permissions" :key="permission.id" :class="badge(permission.name)" class="badge text-bg-primary m-1">{{ permission.name }}</span>
                             </span>
                         </td>
                     </tr>
@@ -70,6 +70,20 @@ export default {
             this.newRole.role = "";
             this.newRole.selectPermissions = [];
         },
+        badge(permissionName) {
+            switch (permissionName) {
+                case 'user-read':
+                    return 'text-bg-info';
+                case 'user-create':
+                    return 'text-bg-primary';
+                case 'user-update':
+                    return 'text-bg-secondary';
+                case 'user-delete':
+                    return 'text-bg-danger';
+                default:
+                    return 'text-bg-light';
+            }
+        },
         ...mapActions(['getRoles', 'createRole', 'getPermissions']),
     },
     computed: {
@@ -78,8 +92,6 @@ export default {
     mounted() {
         this.getRoles(this.token);
         this.getPermissions(this.token);
-        // this.createRole(this.role);
-        // console.log(this.roles);
     },
 }
 </script>
