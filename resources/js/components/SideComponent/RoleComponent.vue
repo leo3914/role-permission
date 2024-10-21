@@ -24,20 +24,24 @@
             <div class="col-md-8">
                 <h5 class="mb-3">Role List</h5>
                 <table class=" table table-striped table-bordered">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Permissions</th>
-                    </tr>
-                    <tr v-for="role in roles" :key="role.id">
-                        <td>{{ role.id }}</td>
-                        <td>{{ role.role }}</td>
-                        <td>
-                            <span>
-                                <span v-for="permission in role.permissions" :key="permission.id" :class="badge(permission.name)" class="badge text-bg-primary m-1">{{ permission.name }}</span>
-                            </span>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Permissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="role in roles" :key="role.id">
+                            <td>{{ role.id }}</td>
+                            <td>{{ role.role }}</td>
+                            <td>
+                                <span>
+                                    <span v-for="permission in role.permissions" :key="permission.id" :class="badge(permission.name)" class="badge text-bg-primary m-1">{{ permission.name }}</span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -80,6 +84,14 @@ export default {
                     return 'text-bg-secondary';
                 case 'user-delete':
                     return 'text-bg-danger';
+                case 'task-create':
+                    return 'text-bg-success';
+                case 'task-read':
+                    return 'text-bg-light';
+                case 'task-update':
+                    return 'text-bg-dark';
+                case 'task-delete':
+                    return 'text-bg-warning';
                 default:
                     return 'text-bg-light';
             }

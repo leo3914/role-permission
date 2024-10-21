@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::create([
             'role' => "Admin"
         ]);
-        $permissions = ["user-create", "user-read", "user-update", "user-delete"];
+        $permissions = ["user-create", "user-read", "user-update", "user-delete","task-create","task-read","task-update","task-delete"];
         foreach ($permissions as $per) {
             Permission::create([
                 'name' => $per,

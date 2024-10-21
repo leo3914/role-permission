@@ -37,7 +37,7 @@
                 <td>
                     {{ user.role.role }}
                 </td>
-                <td>
+                <td class=" w-50">
                     <span>
                         <span v-for="permission in user.role.permissions" :key="permission.id" :class="badge(permission.name)" class="badge m-1">
                             {{ permission.name }}
@@ -139,6 +139,14 @@ export default {
                     return 'text-bg-secondary';
                 case 'user-delete':
                     return 'text-bg-danger';
+                case 'task-create':
+                    return 'text-bg-success';
+                case 'task-read':
+                    return 'text-bg-light';
+                case 'task-update':
+                    return 'text-bg-dark';
+                case 'task-delete':
+                    return 'text-bg-warning';
                 default:
                     return 'text-bg-light';
             }
