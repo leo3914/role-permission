@@ -6,7 +6,7 @@
     <h3 class="text-center">Create Task</h3>
     <div class="container">
         <div class="row justify-content-center align-items-center h-100">
-            <form @submit.prevent="" style="width: 600px;">
+            <form @submit.prevent="clearForm()" style="width: 600px;">
                 <label for="task" class="mb-1">Task</label>
                 <input v-model="task.task" type="text" id="task" class="form-control mb-1" placeholder="Enter a task">
 
