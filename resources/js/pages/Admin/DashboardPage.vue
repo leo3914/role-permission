@@ -10,6 +10,7 @@
         </div>
     </div>
 </div>
+<v-btn>Button</v-btn>
 </template>
 
 <script>
