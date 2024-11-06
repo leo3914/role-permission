@@ -1,15 +1,13 @@
 <template>
 <v-layout class="rounded rounded-md">
-    <!-- <div class="row"> -->
     <v-navigation-drawer>
         <NavComponent :userName="userName" :userRole="userRole" :hasPermission="hasPermission" />
     </v-navigation-drawer>
-    <v-main class="d-flex align-center justify-center">
-        <div class="p-2">
+    <v-main class="d-flex align-center justify-center bg-cyan-darken-4" theme="dark">
+        <div class="p-2 h-screen">
             <router-view :loginUser="loginUser" :hasPermission="hasPermission" />
         </div>
     </v-main>
-    <!-- </div> -->
 </v-layout>
 </template>
 

@@ -9,7 +9,7 @@
             <h3>You haven't permissions :3</h3>
         </div>
     </div>
-    <table v-if="hasPermission('user-read')" class="table table-striped p-2">
+    <v-table fixed-header v-if="hasPermission('user-read')" class=" p-2">
         <thead>
             <tr>
                 <th scope="col">Id</th>
@@ -45,15 +45,14 @@
                     </span>
                 </td>
                 <td>
-                    <button v-if="loginUser.id !== user.id && hasPermission('user-update')" @click="editUser(user.id)" class="btn btn-outline-info btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                    <button v-if="loginUser.id !== user.id && hasPermission('user-delete')" @click="deleteUser(user.id)" class="btn btn-outline-danger btn-sm">Delete</button>
+                    <v-btn  size="x-small" v-if="loginUser.id !== user.id && hasPermission('user-update')" @click="editUser(user.id)" class=" bg-info me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</v-btn>
+                    <v-btn size="x-small" v-if="loginUser.id !== user.id && hasPermission('user-delete')" @click="deleteUser(user.id)" class="bg-danger">Delete</v-btn>
                 </td>
             </tr>
         </tbody>
-    </table>
-</div>
+    </v-table>
 
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,6 +79,8 @@
         </div>
     </div>
 </div>
+</div>
+
 </template>
 
 <script>
