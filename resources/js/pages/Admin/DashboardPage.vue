@@ -1,16 +1,16 @@
 <template>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2 p-2">
-            <NavComponent :userName="userName" :userRole="userRole" :hasPermission="hasPermission" />
-        </div>
-        <div class="col-md-10">
-            <!-- <router-view :users="users" :fetchUsers="fetchUsers" /> -->
+<v-layout class="rounded rounded-md">
+    <!-- <div class="row"> -->
+    <v-navigation-drawer>
+        <NavComponent :userName="userName" :userRole="userRole" :hasPermission="hasPermission" />
+    </v-navigation-drawer>
+    <v-main class="d-flex align-center justify-center">
+        <div class="p-2">
             <router-view :loginUser="loginUser" :hasPermission="hasPermission" />
         </div>
-    </div>
-</div>
-<v-btn>Button</v-btn>
+    </v-main>
+    <!-- </div> -->
+</v-layout>
 </template>
 
 <script>
@@ -28,7 +28,7 @@ export default {
             user: null,
             userName: "",
             userRole: null,
-            loginUser : JSON.parse(localStorage.getItem("user")),
+            loginUser: JSON.parse(localStorage.getItem("user")),
             loginPermissions: JSON.parse(localStorage.getItem('permissions')),
         }
     },

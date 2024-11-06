@@ -23,7 +23,7 @@
                     <input v-model="password" type="password" class="form-control" id="password" placeholder="Enter your password">
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <v-btn type="submit" variant="outlined" class="bg-primary">Login</v-btn>
                 </div>
             </form>
             <p class=" text-center">
