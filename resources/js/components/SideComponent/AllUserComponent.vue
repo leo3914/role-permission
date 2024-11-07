@@ -9,7 +9,7 @@
             <h3>You haven't permissions :3</h3>
         </div>
     </div>
-    <v-table fixed-header v-if="hasPermission('user-read')" class=" p-2">
+    <v-table fixed-header v-if="hasPermission('user-read')" class=" p-2 rounded-lg">
         <thead>
             <tr>
                 <th scope="col">Id</th>

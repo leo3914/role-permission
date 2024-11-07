@@ -4,7 +4,7 @@
         <NavComponent :userName="userName" :userRole="userRole" :hasPermission="hasPermission" />
     </v-navigation-drawer>
     <v-main class="d-flex align-center justify-center bg-cyan-darken-4" theme="dark">
-        <div class="p-2 h-screen">
+        <div class="p-2 h-screen w-100">
             <router-view :loginUser="loginUser" :hasPermission="hasPermission" />
         </div>
     </v-main>

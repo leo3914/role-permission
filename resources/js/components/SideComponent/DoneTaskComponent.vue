@@ -9,7 +9,7 @@
             <h3>You haven't permissions :3</h3>
         </div>
     </div>
-    <table v-if="hasPermission('task-read')" class="table table-striped p-2">
+    <v-table v-if="hasPermission('task-read')" class=" p-2">
         <thead>
             <tr>
                 <th scope="col">Id</th>
@@ -40,7 +40,7 @@
                 </td>
             </tr>
         </tbody>
-    </table>
+    </v-table>
 
     <!-- EditModal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">

@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-4 border p-4 rounded">
                 <h5 class="mb-3">Create Role</h5>
-                <form @submit.prevent="clearForm()">
+                <v-form @submit.prevent="clearForm()">
                     <input type="text" class="form-control mb-2" placeholder="Enter role" v-model="newRole.role">
                     <div class="row">
                         <div class="form-check col-4 m-1" v-for="permission in permissions" :key="permission.id">
@@ -19,11 +19,11 @@
                         </div>
                     </div>
                     <button class="btn btn-primary mt-2" @click="createRole(newRole)">Create Role</button>
-                </form>
+                </v-form>
             </div>
             <div class="col-md-8">
                 <h5 class="mb-3">Role List</h5>
-                <table class=" table table-striped table-bordered">
+                <v-table class="rounded-lg">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -42,7 +42,7 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </v-table>
             </div>
         </div>
     </div>
