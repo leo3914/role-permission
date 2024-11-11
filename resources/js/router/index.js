@@ -10,6 +10,7 @@ import UserPage from "../pages/User/UserPage.vue";
 import CreateComponent from "../components/SideComponent/CreateComponent.vue";
 import CreateTaskComponent from "../components/SideComponent/CreateTaskComponent.vue";
 import EditUserComponent from "../components/SideComponent/EditUserComponent.vue";
+import TestComponent from "../components/SideComponent/TestComponent.vue";
 
 const routes = [
     {
@@ -73,6 +74,11 @@ const routes = [
                 name: "CreateTaskComponent",
                 component: CreateTaskComponent,
             },
+            {
+                path:"/dashboard/test",
+                name:"TestComponent",
+                component:TestComponent,
+            }
         ],
     },
     // {
