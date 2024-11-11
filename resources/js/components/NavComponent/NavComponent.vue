@@ -16,8 +16,8 @@
             Create User
         </router-link>
     </v-list-item>
-    <v-list-item link v-if="userRole == 'Admin'" to="/dashboard/role">
-        <router-link class="list-group-item list-group-item-action">Role Create</router-link>
+    <v-list-item link v-if="userRole == 'Admin'">
+        <router-link  to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link>
     </v-list-item>
     <v-list-item link v-if="hasPermission('task-create')">
         <router-link to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link>
