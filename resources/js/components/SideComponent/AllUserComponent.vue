@@ -45,14 +45,14 @@
                     </span>
                 </td>
                 <td>
-                    <v-btn  size="x-small" v-if="loginUser.id !== user.id && hasPermission('user-update')" @click="editUser(user.id)" class=" bg-info me-1" data-bs-toggle="modal" data-bs-target="#editModal">Edit</v-btn>
+                    <v-btn size="x-small" v-if="loginUser.id !== user.id && hasPermission('user-update')" @click="editUser(user.id)" class=" bg-info me-1">Edit</v-btn>
                     <v-btn size="x-small" v-if="loginUser.id !== user.id && hasPermission('user-delete')" @click="deleteUser(user.id)" class="bg-danger">Delete</v-btn>
                 </td>
             </tr>
         </tbody>
     </v-table>
 
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,9 +78,29 @@
             </div>
         </div>
     </div>
-</div>
-</div>
+</div> -->
+    <v-dialog v-model="user.dialog" width="auto">
+        <v-card min-width="800" prepend-icon="mdi-update" title="Update user" class="p-3">
 
+            <input type="hidden" v-model="user.id" />
+            <h6>Name :</h6><input type="text" v-model="user.name" class="form-control mb-1">
+            <h6>Phone :</h6><input type="number" v-model="user.phone" class="form-control mb-1">
+            <h6>Role : {{ user.role }}</h6>
+            <h6>Permissions</h6>
+            <div class="form-check col-4 m-1" v-for="permission in permissions" :key="permission.id">
+                <input :checked="user.userPermissions.includes(permission.id)" v-model="user.updatePermissions" class="form-check-input" type="checkbox" :value="permission.id" :id="'permission_' + permission.id">
+                <label class="form-check-label text-primary" :for="'permission_' + permission.id">
+                    {{ permission.name.toUpperCase() }}
+                </label>
+            </div>
+
+            <template v-slot:actions>
+                <v-btn class="ms-auto" text="Cancel" @click="user.dialog = false"></v-btn>
+                <v-btn @click="updateUser(user)" class="bg-success">Update</v-btn>
+            </template>
+        </v-card>
+    </v-dialog>
+</div>
 </template>
 
 <script>
@@ -104,6 +124,7 @@ export default {
                 userPermissions: [],
                 updatePermissions: [],
                 token: localStorage.getItem('token'),
+                dialog: false,
             },
             loginUserId: localStorage.getItem('role_id'),
             token: localStorage.getItem('token'),
@@ -119,6 +140,7 @@ export default {
     },
     methods: {
         editUser(id) {
+            this.user.dialog = true;
             const findUser = this.users.find((i) => i.id == id);
             this.user.id = findUser.id;
             this.user.phone = findUser.phone;
@@ -152,7 +174,7 @@ export default {
                     return 'text-bg-light';
             }
         },
-        ...mapActions(['getUsers', 'getRoles', 'updateUser', "getPermissions", "updateUser", "deleteUser"]),
+        ...mapActions(['getUsers', 'getRoles', "getPermissions", "updateUser", "deleteUser"]),
     },
     mounted() {
         this.getUsers(this.token);

@@ -99,12 +99,7 @@ export default {
                         },
                     }
                 );
-                const modal = document.querySelector(
-                    '[data-bs-dismiss="modal"]'
-                );
-                if (modal) {
-                    modal.click();
-                }
+                user.dialog = false;
                 alert(data.message);
                 commit("updateUsers", data.user);
             } catch (e) {

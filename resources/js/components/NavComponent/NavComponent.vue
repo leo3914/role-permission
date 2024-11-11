@@ -8,19 +8,19 @@
 <v-list>
     <v-list-item link>
         <router-link to="/dashboard" class="list-group-item list-group-item-action">
-            Home 
+            Home
         </router-link>
     </v-list-item>
-    <v-list-item link>
-        <router-link v-if="hasPermission('user-create')" to="/dashboard/create" class="list-group-item list-group-item-action">
+    <v-list-item link v-if="hasPermission('user-create')">
+        <router-link to="/dashboard/create" class="list-group-item list-group-item-action">
             Create User
         </router-link>
     </v-list-item>
-    <v-list-item link>
-        <router-link v-if="userRole == 'Admin'" to="/dashboard/role" class="list-group-item list-group-item-action">Role Create</router-link>
+    <v-list-item link v-if="userRole == 'Admin'" to="/dashboard/role">
+        <router-link class="list-group-item list-group-item-action">Role Create</router-link>
     </v-list-item>
-    <v-list-item link>
-        <router-link v-if="hasPermission('task-create')" to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link>
+    <v-list-item link v-if="hasPermission('task-create')">
+        <router-link to="/dashboard/createTask" class="list-group-item list-group-item-action">Create Task</router-link>
     </v-list-item>
     <v-list-item link>
         <router-link to="/dashboard/task" class="list-group-item list-group-item-action">Tasks</router-link>
