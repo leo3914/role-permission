@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
+Route::get('/usersPage', [UserController::class, 'userWithPage']);
 Route::middleware(['auth:sanctum'])->group(function () {
     //users
     Route::get('/users', [UserController::class, 'index'])->middleware('permission:user-read');
