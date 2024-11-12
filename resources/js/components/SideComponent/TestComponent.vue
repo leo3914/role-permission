@@ -24,10 +24,15 @@
 </template>
 
 <script>
+import axios from 'axios';
 import {
     mapActions,
     mapGetters
-} from 'vuex'
+} from 'vuex';
+
+// const userApi = {
+//     const fetchUser
+// }
 
 export default {
     data: () => ({
@@ -68,14 +73,25 @@ export default {
         ],
         loading: true,
         totalItems: 0,
+        items: [],
         name: '',
         search: '',
         token: localStorage.getItem('token'),
+        // options: {
+        //     page: 1,
+        //     itemPerPage: 10,
+        //     sortBy: [],
+        //     sortDesc: [],
+        // },
     }),
     watch: {
         name() {
             this.search = String(Date.now())
         },
+        // option: {
+        //     handler: 'fetchUsers',
+        //     deep: true
+        // }
     },
     methods: {
         ...mapActions(['getUsers']),
@@ -89,13 +105,43 @@ export default {
                 this.loading = false;
             }
         },
+        // async fetchUsers() {
+        //     this.loading = true;
+        //     const {
+        //         page,
+        //         itemsPerPage,
+        //         sortBy,
+        //         sortDesc
+        //     } = this.options;
+
+        //     try {
+        //         const res = await axios.get("http://127.0.0.1:8000/api/usersPage",{
+        //             params:{
+        //                 page,
+        //                 itemsPerPage,
+        //             }
+        //         });
+        //         console.log(res);
+        //         this.items = res.data.data;
+        //         this.totalItems = res.data.total
+        //     } catch (e) {
+        //         console.log(e.message);
+        //     } finally {
+        //         this.loading = false;
+        //     }
+        // }
+
     },
     computed: {
         ...mapGetters(['users']),
     },
     mounted() {
         this.fetchUsers();
+        // this.getUsers();
         // console.log(this.users);
     },
+    created(){
+        // this.fetchUsers();
+    }
 }
 </script>

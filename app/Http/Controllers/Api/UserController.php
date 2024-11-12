@@ -206,4 +206,9 @@ class UserController extends Controller
             return response()->json(['error' => 'Failed to fetch users'], 500);
         }
     }
+    public function userWithPage()
+    {
+        $users = User::with('role', 'role.permissions')->paginate(10);
+        return response()->json(['users' => $users], 200);
+    }
 }
