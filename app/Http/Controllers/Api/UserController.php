@@ -208,7 +208,15 @@ class UserController extends Controller
     }
     public function userWithPage()
     {
-        $users = User::with('role', 'role.permissions')->paginate(10);
+        $per_page = request()->input('per_page',10);
+        $search = request()->input('search','');
+        $query = User::with('role', 'role.permissions');
+        if($search){
+            $query->where('name','like',"%{$search}%")
+            ->orWhere('email','like',"%{$search}%");
+        }
+        // $users = User::with('role', 'role.permissions')->paginate($per_page);
+        $users = $query->paginate($per_page);
         return response()->json(['users' => $users], 200);
     }
 }

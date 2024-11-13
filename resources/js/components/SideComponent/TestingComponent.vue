@@ -1,5 +1,12 @@
 <template>
 <v-data-table-server v-model:items-per-page="itemsPerPage" :headers="headers" :items="serverItems" :items-length="totalItems" :loading="loading" :search="search" item-value="name" @update:options="loadItems">
+    <template v-slot:top>
+        <tr>
+            <td>
+                <v-text-field v-model="search" class="ma-2" density="compact" placeholder="Search name..." @input="onSearch" clearable hide-details></v-text-field>
+            </td>
+        </tr>
+    </template>
 </v-data-table-server>
 </template>
 
@@ -8,7 +15,7 @@ import axios from 'axios';
 
 export default {
     data: () => ({
-        itemsPerPage: 5,
+        itemsPerPage: 10,
         headers: [{
                 title: 'Name',
                 key: 'name',
@@ -39,7 +46,7 @@ export default {
     methods: {
         loadItems({
             page,
-            itemsPerPage
+            itemsPerPage,
         }) {
             this.loading = true;
 
@@ -49,7 +56,8 @@ export default {
             axios.get('http://127.0.0.1:8000/api/usersPage', {
                     params: {
                         page: page,
-                        per_page: itemsPerPage
+                        per_page:itemsPerPage,
+                        search:this.search,
                     }
                 })
                 .then(res => {
@@ -58,12 +66,16 @@ export default {
 
                     this.serverItems = res.data.users.data;
                     this.totalItems = res.data.users.total;
+                    // this.itemsPerPage = res.data.users.per_page;
                     this.loading = false;
                 })
                 .catch(error => {
                     console.log("Error :", error);
                     this.loading = false;
                 });
+        },
+        onSearch(){
+            this.loadItems({page:1, itemsPerPage:this.itemsPerPage});
         },
     },
     created() {
