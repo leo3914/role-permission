@@ -13,6 +13,8 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { mdi, aliases } from "vuetify/iconsets/mdi-svg";
+import { abilitiesPlugin } from "@casl/vue";
+import { ability } from "./casl/ability";
 
 const vuetify = createVuetify({
     components,
@@ -30,5 +32,6 @@ const vuetify = createVuetify({
 const app = createApp(App);
 app.use(router);
 app.use(store);
+app.use(abilitiesPlugin,ability);
 app.use(vuetify);
 app.mount("#app");
